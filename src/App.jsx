@@ -30,6 +30,15 @@ function App() {
   const [notificationPermission, setNotificationPermission] = useState("default");
 
   useEffect(() => {
+  const fetchLessons = async () => {
+    const querySnapshot = await getDocs(collection(db, "lessons"));
+    const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    setLessons(data);
+  };
+  fetchLessons();
+}, []);
+
+  useEffect(() => {
   const unsubscribe = onSnapshot(collection(db, "lessons"), (snapshot) => {
     const data = snapshot.docs.map((doc) => ({
       id: doc.id,
