@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const SPACED_INTERVALS = [1, 3, 7, 14, 30];
 
-function App() {
+export default function SpacedRepetitionApp() {
   const [lessons, setLessons] = useState([]);
   const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
@@ -96,23 +96,23 @@ function App() {
 
   return (
     <div className={`${darkMode ? 'bg-slate-900 text-white' : 'bg-sky-50 text-slate-700'} max-w-4xl mx-auto p-6 space-y-6 font-[Quicksand] min-h-screen`}>
-      <div className="flex justify-center items-center relative">
-        <h1 className="text-4xl font-bold text-yellow-400 text-center">🍋 Lemon Learn ☀️</h1>
-        <button
-          onClick={() => setDarkMode(!darkMode)}
-          className="absolute right-0 text-sm transition hover:scale-[1.05]"
-        >
-          {darkMode ? "☀️ Sáng" : "🌙 Tối"}
-        </button>
-      </div>
+<div className="flex justify-center items-center relative">
+  <h1 className="text-4xl font-bold text-yellow-400 text-center">🍋 Lemon Learn ☀️</h1>
+  <button
+    onClick={() => setDarkMode(!darkMode)}
+    className="absolute right-0 text-sm transition hover:scale-[1.05]"
+  >
+    {darkMode ? "☀️ Sáng" : "🌙 Tối"}
+  </button>
+</div>
       <p className="text-center italic text-sky-500">Sip your way to knowledge, one review at a time.</p>
 
       <Card className="bg-white dark:bg-slate-800 shadow-md rounded-2xl border border-yellow-100 dark:border-slate-700">
         <CardContent className="space-y-3 p-6">
-          <Input placeholder="📘 Tên bài học" value={title} onChange={(e) => setTitle(e.target.value)} className="rounded-xl" />
-          <Textarea placeholder="📝 Ghi chú" value={note} onChange={(e) => setNote(e.target.value)} className="rounded-xl" />
-          <Input placeholder="🔗 Link bài giảng / video" value={link} onChange={(e) => setLink(e.target.value)} className="rounded-xl" />
-          <Input placeholder="🏷️ Chủ đề / Tag" value={tag} onChange={(e) => setTag(e.target.value)} className="rounded-xl" />
+          <Input placeholder="📘 Tên bài học" value={title} onChange={(e) => setTitle(e.target.value)} className="rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100" />
+          <Textarea placeholder="📝 Ghi chú" value={note} onChange={(e) => setNote(e.target.value)} className="rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100" />
+          <Input placeholder="🔗 Link bài giảng / video" value={link} onChange={(e) => setLink(e.target.value)} className="rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100" />
+          <Input placeholder="🏷️ Chủ đề / Tag" value={tag} onChange={(e) => setTag(e.target.value)} className="rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100" />
           <Button onClick={addLesson} className="w-full bg-yellow-100 hover:bg-yellow-300 text-slate-800 rounded-xl font-semibold">🍹 Lưu bài học</Button>
         </CardContent>
       </Card>
@@ -132,7 +132,7 @@ function App() {
               <h3 className="font-bold text-lg text-yellow-600">☀️ {l.title}</h3>
               <p className="text-sm font-semibold px-2 py-1 inline-block bg-yellow-100 dark:bg-yellow-300 text-yellow-800 dark:text-slate-900 rounded-lg shadow-sm">#{l.tag}</p>
               <p>{l.note}</p>
-              {l.link && <a href={l.link} className="text-blue-600 underline" target="_blank" rel="noreferrer">🔗 Xem bài giảng</a>}
+              {l.link && <a href={l.link} className="text-blue-600 underline" target="_blank">🔗 Xem bài giảng</a>}
               <div className="flex gap-2 mt-2">
                 <Button className="bg-lime-300 hover:bg-lime-400 text-slate-800 px-3 py-1 text-sm rounded-lg" onClick={() => markReviewed(l.id)}>✅ Đã ôn</Button>
                 <Button className="bg-amber-200 hover:bg-amber-300 text-slate-800 px-3 py-1 text-sm rounded-lg" onClick={() => resetReview(l.id)}>🔁 Cần ôn lại</Button>
@@ -145,8 +145,8 @@ function App() {
       <div className="space-y-4">
         <h2 className="text-2xl font-semibold text-yellow-400">📚 Danh sách bài học</h2>
         <div className="flex gap-2">
-          <Input placeholder="🔍 Tìm kiếm..." value={search} onChange={(e) => setSearch(e.target.value)} className="rounded-xl" />
-          <Input placeholder="🏷️ Lọc theo tag..." value={filterTag} onChange={(e) => setFilterTag(e.target.value)} className="rounded-xl" />
+          <Input placeholder="🔍 Tìm kiếm..." value={search} onChange={(e) => setSearch(e.target.value)} className="rounded-xl placeholder-slate-500 dark:placeholder-slate-300" />
+          <Input placeholder="🏷️ Lọc theo tag..." value={filterTag} onChange={(e) => setFilterTag(e.target.value)} className="rounded-xl placeholder-slate-500 dark:placeholder-slate-300" />
         </div>
         {filteredLessons.length === 0 && <p className="text-sky-500">😶 Không tìm thấy bài học nào...</p>}
         {filteredLessons.map((l) => (
@@ -156,7 +156,7 @@ function App() {
               <p className="text-sm font-semibold px-2 py-1 inline-block bg-yellow-100 dark:bg-yellow-300 text-yellow-800 dark:text-slate-900 rounded-lg shadow-sm">{l.tag} • Lưu ngày: {format(new Date(l.createdAt), 'dd/MM/yyyy')}</p>
               <p className="text-sm">Tình trạng: {l.status === "reviewed" ? "✅ Đã ôn" : "⌛ Chưa ôn"}</p>
               <p className="text-sm">Lần ôn tiếp theo: {format(new Date(l.nextReview), 'dd/MM/yyyy')}</p>
-              {l.link && <a href={l.link} className="text-blue-500 underline text-sm" target="_blank" rel="noreferrer">🔗 Xem liên kết</a>}
+              {l.link && <a href={l.link} className="text-blue-500 underline text-sm" target="_blank">🔗 Xem liên kết</a>}
               <div className="flex gap-2 mt-2">
                 <Button className="bg-lime-300 hover:bg-lime-400 text-slate-800 px-3 py-1 text-sm rounded-lg" onClick={() => markReviewed(l.id)}>✅ Đã ôn</Button>
                 <Button className="bg-amber-200 hover:bg-amber-300 text-slate-800 px-3 py-1 text-sm rounded-lg" onClick={() => resetReview(l.id)}>🔁 Cần ôn lại</Button>
