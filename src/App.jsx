@@ -1,5 +1,14 @@
-import { db } from "./firebase";
-import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { useState, useEffect } from "react";
+import { db } from "./firebase"; // ← thêm dòng này
+import {
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  updateDoc,
+  doc,
+  onSnapshot
+} from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -22,9 +31,24 @@ function App() {
   const [notificationPermission, setNotificationPermission] = useState("default");
 
   useEffect(() => {
-    const stored = localStorage.getItem("lessons");
-    if (stored) setLessons(JSON.parse(stored));
-  }, []);
+  const fetchLessons = async () => {
+    const querySnapshot = await getDocs(collection(db, "lessons"));
+    const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    setLessons(data);
+  };
+  fetchLessons();
+}, []);
+
+  useEffect(() => {
+  const unsubscribe = onSnapshot(collection(db, "lessons"), (snapshot) => {
+    const data = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    setLessons(data);
+  });
+  return () => unsubscribe();
+}, []);
 
   useEffect(() => {
     localStorage.setItem("lessons", JSON.stringify(lessons));
@@ -45,46 +69,43 @@ function App() {
     return () => clearInterval(interval);
   }, [lessons, notificationPermission]);
 
-  const addLesson = () => {
-    const newLesson = {
-      id: uuidv4(),
-      title,
-      note,
-      tag,
-      link,
-      createdAt: new Date().toISOString(),
-      status: "not reviewed",
-      reviews: 0,
-      nextReview: addDays(new Date(), 1).toISOString()
-    };
-    setLessons([newLesson, ...lessons]);
-    setTitle(""); setNote(""); setTag(""); setLink("");
+  const addLesson = async () => {
+  const newLesson = {
+    title,
+    note,
+    tag,
+    link,
+    createdAt: new Date().toISOString(),
+    status: "not reviewed",
+    reviews: 0,
+    nextReview: addDays(new Date(), 1).toISOString()
   };
+  await addDoc(collection(db, "lessons"), newLesson);
+  setTitle(""); setNote(""); setTag(""); setLink("");
+};
 
-  const markReviewed = (id) => {
-    setLessons(lessons.map((l) => {
-      if (l.id === id) {
-        const nextInterval = SPACED_INTERVALS[Math.min(l.reviews + 1, SPACED_INTERVALS.length - 1)];
-        return {
-          ...l,
-          status: "reviewed",
-          reviews: l.reviews + 1,
-          nextReview: addDays(new Date(), nextInterval).toISOString()
-        };
-      }
-      return l;
-    }));
-  };
+  const markReviewed = async (id) => {
+  const lesson = lessons.find((l) => l.id === id);
+  if (!lesson) return;
+  const nextInterval = SPACED_INTERVALS[Math.min(lesson.reviews + 1, SPACED_INTERVALS.length - 1)];
+  await updateDoc(doc(db, "lessons", id), {
+    status: "reviewed",
+    reviews: lesson.reviews + 1,
+    nextReview: addDays(new Date(), nextInterval).toISOString()
+  });
+};
 
-  const resetReview = (id) => {
-    setLessons(lessons.map((l) =>
-      l.id === id ? { ...l, status: "not reviewed", reviews: 0, nextReview: addDays(new Date(), 1).toISOString() } : l
-    ));
-  };
+  const resetReview = async (id) => {
+  await updateDoc(doc(db, "lessons", id), {
+    status: "not reviewed",
+    reviews: 0,
+    nextReview: addDays(new Date(), 1).toISOString()
+  });
+};
 
-  const deleteLesson = (id) => {
-    setLessons(lessons.filter((l) => l.id !== id));
-  };
+  const deleteLesson = async (id) => {
+  await deleteDoc(doc(db, "lessons", id));
+};
 
   const todayLessons = lessons.filter((l) => isToday(new Date(l.nextReview)));
 
