@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { db } from "./firebase"; // ← thêm dòng này
+import { db } from "./firebase";
 import {
   collection,
   addDoc,
