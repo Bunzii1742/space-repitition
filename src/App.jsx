@@ -50,10 +50,6 @@ function App() {
 }, []);
 
   useEffect(() => {
-    localStorage.setItem("lessons", JSON.stringify(lessons));
-  }, [lessons]);
-
-  useEffect(() => {
     if ("Notification" in window) {
       Notification.requestPermission().then(setNotificationPermission);
     }
