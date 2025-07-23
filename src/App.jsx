@@ -109,10 +109,10 @@ function App() {
 
       <Card className="bg-white dark:bg-slate-800 shadow-md rounded-2xl border border-yellow-100 dark:border-slate-700">
         <CardContent className="space-y-3 p-6">
-          <Input placeholder="📘 Tên bài học" value={title} onChange={(e) => setTitle(e.target.value)} className="rounded-xl" />
-          <Textarea placeholder="📝 Ghi chú" value={note} onChange={(e) => setNote(e.target.value)} className="rounded-xl" />
-          <Input placeholder="🔗 Link bài giảng / video" value={link} onChange={(e) => setLink(e.target.value)} className="rounded-xl" />
-          <Input placeholder="🏷️ Chủ đề / Tag" value={tag} onChange={(e) => setTag(e.target.value)} className="rounded-xl" />
+          <Input placeholder="📘 Tên bài học" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full rounded-xl" />
+          <Textarea placeholder="📝 Ghi chú" value={note} onChange={(e) => setNote(e.target.value)} className="w-full rounded-xl" />
+          <Input placeholder="🔗 Link bài giảng / video" value={link} onChange={(e) => setLink(e.target.value)} className="w-full rounded-xl" />
+          <Input placeholder="🏷️ Chủ đề / Tag" value={tag} onChange={(e) => setTag(e.target.value)} className="w-full rounded-xl" />
           <Button onClick={addLesson} className="w-full bg-yellow-100 hover:bg-yellow-300 text-slate-800 rounded-xl font-semibold">🍹 Lưu bài học</Button>
         </CardContent>
       </Card>
@@ -145,8 +145,8 @@ function App() {
       <div className="space-y-4">
         <h2 className="text-2xl font-semibold text-yellow-400">📚 Danh sách bài học</h2>
         <div className="flex gap-2">
-          <Input placeholder="🔍 Tìm kiếm..." value={search} onChange={(e) => setSearch(e.target.value)} className="rounded-xl" />
-          <Input placeholder="🏷️ Lọc theo tag..." value={filterTag} onChange={(e) => setFilterTag(e.target.value)} className="rounded-xl" />
+          <Input placeholder="🔍 Tìm kiếm..." value={search} onChange={(e) => setSearch(e.target.value)} className="rounded-xl placeholder-slate-500 dark:placeholder-slate-300 w-full md:w-1/2" />
+          <Input placeholder="🏷️ Lọc theo tag..." value={filterTag} onChange={(e) => setFilterTag(e.target.value)} className="rounded-xl placeholder-slate-500 dark:placeholder-slate-300 w-full md:w-1/3" />
         </div>
         {filteredLessons.length === 0 && <p className="text-sky-500">😶 Không tìm thấy bài học nào...</p>}
         {filteredLessons.map((l) => (
