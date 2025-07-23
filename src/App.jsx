@@ -146,7 +146,7 @@ function App() {
         <h2 className="text-2xl font-semibold text-yellow-400">📚 Danh sách bài học</h2>
         <div className="flex gap-2">
           <Input placeholder="🔍 Tìm kiếm..." value={search} onChange={(e) => setSearch(e.target.value)} className="rounded-xl placeholder-slate-500 dark:placeholder-slate-300 w-full md:w-1/2" />
-          <Input placeholder="🏷️ Lọc theo tag..." value={filterTag} onChange={(e) => setFilterTag(e.target.value)} className="rounded-xl placeholder-slate-500 dark:placeholder-slate-300 w-full md:w-1/3" />
+          <Input placeholder="🏷️ Lọc theo tag..." value={filterTag} onChange={(e) => setFilterTag(e.target.value)} className="rounded-xl placeholder-slate-500 dark:placeholder-slate-300 w-full md:w-1/2" />
         </div>
         {filteredLessons.length === 0 && <p className="text-sky-500">😶 Không tìm thấy bài học nào...</p>}
         {filteredLessons.map((l) => (
