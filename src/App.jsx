@@ -119,7 +119,7 @@ function App() {
           onClick={() => setDarkMode(!darkMode)}
           className="absolute right-0 text-sm transition hover:scale-[1.05]"
         >
-          {darkMode ? "☀️ Sáng" : "🌙 Tối"}
+          {darkMode ? "☀️" : "🌙"}
         </button>
       </div>
       <p className="text-center italic text-sky-500">Sip your way to knowledge, one review at a time.</p>
