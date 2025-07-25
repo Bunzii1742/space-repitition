@@ -101,7 +101,10 @@ function App() {
   await deleteDoc(doc(db, "lessons", id));
 };
 
-  const todayLessons = lessons.filter((l) => isToday(new Date(l.nextReview)));
+  const today = new Date();
+const todayLessons = lessons.filter((l) =>
+  new Date(l.nextReview) <= today && l.status === "not reviewed"
+);
 
   const filteredLessons = lessons.filter((l) =>
     (filterTag === "" || l.tag.toLowerCase().includes(filterTag.toLowerCase())) &&
