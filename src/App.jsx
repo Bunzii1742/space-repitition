@@ -29,6 +29,10 @@ function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [notificationPermission, setNotificationPermission] = useState("default");
 
+  function startOfDay(date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
   useEffect(() => {
   const fetchInitialData = async () => {
     const querySnapshot = await getDocs(collection(db, "lessons"));
@@ -72,7 +76,7 @@ function App() {
     createdAt: new Date().toISOString(),
     status: "not reviewed",
     reviews: 0,
-    nextReview: addDays(new Date(), 1).toISOString()
+    nextReview: startOfDay(addDays(new Date(), 1)).toISOString()
   };
   await addDoc(collection(db, "lessons"), newLesson);
   setTitle(""); setNote(""); setTag(""); setLink("");
@@ -85,7 +89,7 @@ function App() {
   await updateDoc(doc(db, "lessons", id), {
     status: "reviewed",
     reviews: lesson.reviews + 1,
-    nextReview: addDays(new Date(), nextInterval).toISOString()
+    nextReview: startOfDay(addDays(new Date(), nextInterval)).toISOString()
   });
 };
 
@@ -101,9 +105,9 @@ function App() {
   await deleteDoc(doc(db, "lessons", id));
 };
 
-  const today = new Date();
-const todayLessons = lessons.filter((l) =>
-  new Date(l.nextReview) <= today && l.status === "not reviewed"
+const today = startOfDay(new Date());
+const todayLessons = lessons.filter(
+  (l) => startOfDay(new Date(l.nextReview)) <= today && l.status === "not reviewed"
 );
 
   const filteredLessons = lessons.filter((l) =>
