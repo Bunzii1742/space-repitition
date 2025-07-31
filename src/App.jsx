@@ -34,6 +34,16 @@ function App() {
 }
 
   useEffect(() => {
+  const now = startOfDay(new Date());
+  lessons.forEach(async (l) => {
+    const reviewDate = startOfDay(new Date(l.nextReview));
+    if (reviewDate <= now && l.status === "reviewed") {
+      await updateDoc(doc(db, "lessons", l.id), { status: "not reviewed" });
+    }
+  });
+}, [lessons]);
+
+  useEffect(() => {
   const fetchInitialData = async () => {
     const querySnapshot = await getDocs(collection(db, "lessons"));
     const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
